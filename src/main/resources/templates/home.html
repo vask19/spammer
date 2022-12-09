@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HELLO</title>
+</head>
+<body>
+
+
+<h1>Emails:</h1>
+<div th:each="mail : ${mails}">
+    <p th:text="${mail}">Name</p>
+</div>
+
+<form th:method="post"  th:action="@{/api/mails}">
+    <textarea title="mails"  name="mail" rows="5" cols="30"></textarea>
+    <input type="submit" th:value="Add_new_email">
+</form>
+<br>
+<br>
+<h1>Message:</h1>
+<div th:text="${message}">
+
+</div>
+<form th:method="post"  th:action="@{/api/messages}">
+    <textarea title="message"  name="message" rows="5" cols="30"></textarea>
+    <input type="submit" th:value="Change_message">
+</form>
+
+
+<hr>
+<hr>
+<br>
+<br>
+<br>
+
+<form th:method="post" name="message"  th:action="@{/api/send}">
+    <input name="message" type="submit" th:value="SEND">
+</form>
+
+</body>
+</html>

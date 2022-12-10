@@ -4,6 +4,7 @@ import com.example.spammer.security.CustomSimpleUrlAuthenticationSuccessHandler;
 import com.example.spammer.service.CustomUserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @EnableWebSecurity
+@Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -27,14 +29,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> {
                     try {
                         requests
-                                .requestMatchers("/api/").permitAll()
                                 .anyRequest()
                                 .hasAnyRole("USER")
 
                                 .and()
                                 .userDetailsService(customUserDetailsService)
-                                .formLogin()
-                                .loginPage("/api/auth/login");
+                                .formLogin().loginPage("/api/auth/login")
+                                .loginProcessingUrl("/process_login")
+                                .defaultSuccessUrl("/api/",true)
+                                .successHandler(customAuthenticationSuccessHandler())
+                                .failureUrl("/api/auth/login?error")
+                                .permitAll()
+                                .and()
+                                .logout(LogoutConfigurer::permitAll);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -74,14 +81,7 @@ public class SecurityConfig {
 //        return http.build();
 //    }
 
-    @Bean
-    public WebSecurityCustomizer ignoringCustomizer() {
 
-        return (web)
-                -> web.ignoring().requestMatchers("/resources/**")
-                .and()
-                .ignoring().requestMatchers("/Users/vasylkorol/IdeaProjects/ysellb-to-heroku/src/main/resources/templates/images/1.jpeg");
-    }
 
 
     @Bean

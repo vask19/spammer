@@ -1,5 +1,17 @@
-
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  datasource:
+
+    driver-class-name: org.postgresql.Driver
+    dbcp2:
+      default-schema: spammer-db
+
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5444/spammer-db}
+    username: postgres
+    password: postgres
 
   mail:
     host: smtp.gmail.com

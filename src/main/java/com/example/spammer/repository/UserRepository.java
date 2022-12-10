@@ -1,4 +1,8 @@
 package com.example.spammer.repository;
 
-public interface UserRepository {
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+@Component
+public class UserRepository {
 }
